@@ -21,43 +21,27 @@
  * SOFTWARE. */
 
 /* 
- * File:   main.cpp
+ * File:   cell.h
  * Author: Anton Nazin <anton.na987@gmail.com>
  *
- * Created on November 13, 2018, 9:02 PM
+ * Created on November 25, 2018, 4:49 PM
  */
 
-#include <cstdlib>
-#include <unistd.h>
-#include "life.h"
+#ifndef CELL_H
+#define CELL_H
 
-using namespace std;
+const unsigned char _CELL_MASK_ALIVE = 0x01;
 
-/*
- * 
- */
-int main(int argc, char** argv)
-{
-    Life life(80, 40);
-    life.setrow(0, "    X              ");
-    life.setrow(1, " XX XX  X    XX    ");
-    life.setrow(2, "  XX XXX     XX    ");
-    life.setrow(3, "X  XXX             ");
-    life.setrow(4, " XX X X            ");
-    
-    int i = 0;
-    while (1) {
-        cout << life;
-        cout << i << endl;
-        i++;
-    
-        life.tick();
-        usleep(1000000 / 20);
-    }
-    
-    return 0;
-}
+class Cell {
+public:
+    Cell();
+    void alive(bool set);
+    bool alive();
+private:
+    unsigned char _data;
+};
 
+#endif /* CELL_H */
 
 
 

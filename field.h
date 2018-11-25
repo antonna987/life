@@ -22,7 +22,7 @@
 
 /* 
  * File:   field.h
- * Author: Anton Nazin
+ * Author: Anton Nazin <anton.na987@gmail.com>
  *
  * Created on November 14, 2018, 8:44 PM
  */
@@ -31,6 +31,7 @@
 #define FIELD_H
 
 #include <iostream>
+#include "cell.h"
 
 class Field {
 public:
@@ -40,20 +41,20 @@ public:
     
     int cols() { return _cols; };
     int rows() { return _rows; };
-    bool getalive(int col, int row) { return _cell[_addr(col, row)]; };
-    void setalive(int col, int row, bool alive) { _cell[_addr(col, row)] = alive; };
-    int  getneigh(int col, int row);
+    bool alive(int col, int row);
+    void alive(int col, int row, bool set);
+    int  getncount(int col, int row);
     char getchar (int col, int row);
     void setrow(int row, char const *const str);
     friend std::ostream& operator<< (std::ostream& output, Field& that);
 private:
-    bool *_cell;
+    Cell *_cell;
     int _cols, _rows;
 
     char _calive = 'X';
     char _cdead  = ' ';
     
-    int _swap(int colrow, int colrows);
+    int _normalize(int index, int count);
     int _addr(int col, int row);
 };
 

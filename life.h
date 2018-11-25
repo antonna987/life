@@ -22,7 +22,7 @@
 
 /* 
  * File:   life.h
- * Author: Anton Nazin
+ * Author: Anton Nazin <anton.na987@gmail.com>
  *
  * Created on November 13, 2018, 9:08 PM
  */
@@ -34,16 +34,11 @@
     
 class Life {
 public:
-    Life(int cols, int rows) { _field = new Field(cols, rows); };
-    ~Life() { delete _field; };
-    void setrow(int row, char const *const str) { _field->setrow(row, str); };
-    void setalive(int col, int row, bool alive) {
-        _field->setalive(col, row, alive);
-    };
-    friend std::ostream& operator<< (std::ostream& output, Life& that) {
-        Field& f = *(that._field);
-        return output << f;
-    };
+    Life(int cols, int rows);
+    ~Life();
+    void setrow(int row, char const *const str);
+    void alive(int col, int row, bool set);
+    friend std::ostream& operator<< (std::ostream& output, Life& that);
     void tick(void);
 private:
     Field *_field;

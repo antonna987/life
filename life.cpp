@@ -22,12 +22,38 @@
 
 /* 
  * File:   life.cpp
- * Author: Anton Nazin
+ * Author: Anton Nazin <anton.na987@gmail.com>
  * 
  * Created on November 13, 2018, 9:08 PM
  */
 
 #include "life.h"
+
+Life::Life(int cols, int rows)
+{
+    _field = new Field(cols, rows);
+}
+
+Life::~Life()
+{
+    delete _field;
+}
+
+void Life::setrow(int row, char const *const str)
+{
+    _field->setrow(row, str);
+}
+
+void Life::alive(int col, int row, bool set)
+{
+    _field->alive(col, row, set);
+};
+
+std::ostream& operator<<(std::ostream& output, Life& that)
+{
+    Field& f = *(that._field);
+    return output << f;
+};
 
 void Life::tick(void)
 {
@@ -35,17 +61,16 @@ void Life::tick(void)
     
     for (int col = 0; col < field.cols(); col++) {
         for (int row = 0; row < field.rows(); row++) {
-            int n = field.getneigh(col, row);
-            if (field.getalive(col, row)) {
+            int n = field.getncount(col, row);
+            if (field.alive(col, row)) {
                 // Live cell
                 if (n < _ifless_dies || n > _ifmore_dies)
-                    _field->setalive(col, row, false);
+                    _field->alive(col, row, false);
             } else {
                 // Dead cell
                 if (n == _ifequa_repr)
-                    _field->setalive(col, row, true);
+                    _field->alive(col, row, true);
             }
-            //_field->setalive(col, row, false);
         }
     }
 }
