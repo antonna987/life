@@ -19,3 +19,36 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
+
+/* 
+ * File:   life.cpp
+ * Author: Anton Nazin
+ * 
+ * Created on November 13, 2018, 9:08 PM
+ */
+
+#include "life.h"
+
+void Life::tick(void)
+{
+    Field field(*_field); 
+    
+    for (int col = 0; col < field.cols(); col++) {
+        for (int row = 0; row < field.rows(); row++) {
+            int n = field.getneigh(col, row);
+            if (field.getalive(col, row)) {
+                // Live cell
+                if (n < _ifless_dies || n > _ifmore_dies)
+                    _field->setalive(col, row, false);
+            } else {
+                // Dead cell
+                if (n == _ifequa_repr)
+                    _field->setalive(col, row, true);
+            }
+            //_field->setalive(col, row, false);
+        }
+    }
+}
+
+
+

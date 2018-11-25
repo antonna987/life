@@ -19,3 +19,45 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
+
+/* 
+ * File:   main.cpp
+ * Author: Anton Nazin
+ *
+ * Created on November 13, 2018, 9:02 PM
+ */
+
+#include <cstdlib>
+#include <unistd.h>
+#include "life.h"
+
+using namespace std;
+
+/*
+ * 
+ */
+int main(int argc, char** argv)
+{
+    Life life(80, 40);
+    life.setrow(0, "    X              ");
+    life.setrow(1, " XX XX  X    XX    ");
+    life.setrow(2, "  XX XXX     XX    ");
+    life.setrow(3, "X  XXX             ");
+    life.setrow(4, " XX X X            ");
+    
+    int i = 0;
+    while (1) {
+        cout << life;
+        cout << i << endl;
+        i++;
+    
+        life.tick();
+        usleep(1000000 / 15);
+    }
+    
+    return 0;
+}
+
+
+
+

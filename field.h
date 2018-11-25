@@ -19,3 +19,43 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. */
+
+/* 
+ * File:   field.h
+ * Author: Anton Nazin
+ *
+ * Created on November 14, 2018, 8:44 PM
+ */
+
+#ifndef FIELD_H
+#define FIELD_H
+
+#include <iostream>
+
+class Field {
+public:
+    Field(int cols, int rows);  // (x, y)
+    Field(const Field& orig);
+    ~Field();
+    
+    int cols() { return _cols; };
+    int rows() { return _rows; };
+    bool getalive(int col, int row) { return _cell[_addr(col, row)]; };
+    void setalive(int col, int row, bool alive) { _cell[_addr(col, row)] = alive; };
+    int  getneigh(int col, int row);
+    char getchar (int col, int row);
+    void setrow(int row, char const *const str);
+    friend std::ostream& operator<< (std::ostream& output, Field& that);
+private:
+    bool *_cell;
+    int _cols, _rows;
+
+    char _calive = 'X';
+    char _cdead  = ' ';
+    
+    int _swap(int colrow, int colrows);
+    int _addr(int col, int row);
+};
+
+#endif /* FIELD_H */
+
