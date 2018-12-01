@@ -37,30 +37,21 @@
  * Public
  */
 
-Row::Row()
+Row::Row(int width)
 {
-    _width = 0;
-    _cells = NULL;
+    _width = width;
+    _cells = new Cell[_width];
+}
+
+Row::Row(const Row *orig) : Row(orig->_width)
+{
+    for (int i = 0; i < _width; i++)
+        _cells[i].alive(orig->_cells[i]);
 }
 
 Row::~Row()
 {
     delete [] _cells;
-}
-
-void Row::init(int width)
-{
-    assert(width > 0);
-    
-    _width = width;
-    _cells = new Cell[_width];
-}
-
-void Row::init(const Row& orig)
-{
-    init(orig._width);
-    for (int i = 0; i < _width; i++)
-        _cells[i].alive(orig._cells[i]);
 }
 
 void Row::set(const char *str)
@@ -84,16 +75,16 @@ Cell& Row::cell(int col)
     return _cells[col];
 }
 
-std::ostream& operator<< (std::ostream& output, Row& that)
+std::ostream& operator<< (std::ostream& output, Row *that)
 {
     /* Search for the last alive cell in a row */
     int last;
-    for (last = that._width - 1; last >= 0; last--)
-        if (that.cell(last).alive())
+    for (last = that->_width - 1; last >= 0; last--)
+        if (that->cell(last).alive())
             break;
     /* Print */
     for (int col = 0; col <= last; col++)
-        output << that.cell(col);
+        output << that->cell(col);
 
     //output << '.'; /* for debug, to see end of line */
 

@@ -39,25 +39,22 @@
 
 Field::Field(int width, int height)
 {
-    assert(width > 0 && height > 0);
-    _width = width;
-    _height = height;
-    _rows = new Row[_height];
+    _init(width, height);
     for (int i = 0; i < _height; i++)
-        _rows[i].init(_width);
+        _rows[i] = new Row(_width);
 }
 
 Field::Field(const Field& orig)
 {
-    _width = orig._width;
-    _height = orig._height;
-    _rows = new Row[_height];;
+    _init(orig._width, orig._height);
     for (int i = 0; i < _height; i++)
-        _rows[i].init(orig._rows[i]);
+        _rows[i] = new Row(orig._rows[i]);
 }
 
 Field::~Field()
 {
+    for (int i = 0; i < _height; i++)
+        delete _rows[i];
     delete [] _rows;
 }
 
@@ -75,7 +72,7 @@ Cell& Field::cell(int col, int row)
 {
     col = _normalize(col, _width);
     row = _normalize(row, _height);
-    return _rows[row].cell(col);
+    return _rows[row]->cell(col);
 }
 
 int Field::getncount(int col, int row)
@@ -96,7 +93,7 @@ int Field::getncount(int col, int row)
 void Field::setrow(int row, const char *str)
 {
     row = _normalize(row, _height);
-    _rows[row].set(str);
+    _rows[row]->set(str);
 }
 
 std::ostream& operator<< (std::ostream& output, Field& that)
@@ -113,6 +110,14 @@ std::ostream& operator<< (std::ostream& output, Field& that)
 /*
  * Private
  */
+
+void Field::_init(int width, int height)
+{
+    assert(width > 0 && height > 0);
+    _width = width;
+    _height = height;
+    _rows = new Row *[_height];
+}
 
 int Field::_normalize(int index, int count)
 {

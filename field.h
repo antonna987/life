@@ -46,12 +46,12 @@ public:
     void setrow(int row, const char *str);
     friend std::ostream& operator<< (std::ostream& output, Field& that);
 private:
-    Row *_rows;
+    Row **_rows;
     int _width;
     int _height;
 
+    void _init(int width, int height);
     int _normalize(int index, int count);
-    int _addr(int col, int row);
 };
 
 #endif /* FIELD_H */

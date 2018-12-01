@@ -35,15 +35,14 @@
 
 class Row {
 public:
-    Row();
+    Row(int width);
+    Row(const Row *orig);
     ~Row();
     
-    void init(int width);
-    void init(const Row& orig);
     void set(const char *str);
     int width();
     Cell& cell(int col);
-    friend std::ostream& operator<< (std::ostream& output, Row& that);
+    friend std::ostream& operator<< (std::ostream& output, Row *that);
 private:
     Cell *_cells;
     int _width;
