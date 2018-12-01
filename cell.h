@@ -30,15 +30,22 @@
 #ifndef CELL_H
 #define CELL_H
 
+#include <iostream>
+
 const unsigned char _CELL_MASK_ALIVE = 0x01;
 
 class Cell {
 public:
     Cell();
     void alive(bool set);
+    void alive(char set);
     bool alive();
+    friend std::ostream& operator<< (std::ostream& output, Cell& that);
 private:
     unsigned char _data;
+    
+    char _calive = 'X';
+    char _cdead  = ' ';
 };
 
 #endif /* CELL_H */

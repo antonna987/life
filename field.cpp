@@ -32,6 +32,11 @@
 #include <unistd.h>
 #include "field.h"
 
+
+/*
+ * Public
+ */
+
 Field::Field(int cols, int rows)
 {
     assert(cols > 0 && rows > 0);
@@ -56,14 +61,19 @@ Field::~Field()
     delete [] _cell;
 }
 
-bool Field::alive(int col, int row) 
+int Field::cols() 
 { 
-    return _cell[_addr(col, row)].alive(); 
+    return _cols; 
 }
 
-void Field::alive(int col, int row, bool set) 
+int Field::rows() 
 { 
-    _cell[_addr(col, row)].alive(set); 
+    return _rows; 
+}
+
+Cell& Field::cell(int col, int row)
+{
+    return _cell[_addr(col, row)];
 }
 
 int Field::getncount(int col, int row)
@@ -72,7 +82,7 @@ int Field::getncount(int col, int row)
     for (int dcol = -1; dcol < 2; dcol++) {
         for (int drow = -1; drow < 2; drow++) {
             if (dcol != 0 || drow != 0) {
-                if (alive(col + dcol, row + drow))
+                if (cell(col + dcol, row + drow).alive())
                     n++;
             }
         }
@@ -81,22 +91,13 @@ int Field::getncount(int col, int row)
     return n;
 }
 
-char Field::getchar (int col, int row)
-{
-    if (alive(col, row))
-        return _calive;
-    else
-        return _cdead;
-}
-
 void Field::setrow(int row, char const *const str)
 {
     row = _normalize(row, _rows);
     for (int col = 0; col < _cols; col++) {
-        if (str[col] != 0) {
-            bool check = (str[col] == _calive);
-            alive(col, row, check);
-        } else
+        if (str[col] != 0)
+            cell(col, row).alive(str[col]);
+        else
             return;
     }
 }
@@ -107,15 +108,13 @@ std::ostream& operator<< (std::ostream& output, Field& that)
     assert(result == 0);    /* What should I do with it? */
     for (int row = 0; row < that._rows; row++) {
         /* Search for the last alive cell in a row */
-        int last = that._cols - 1;
-        for (int col = last; col >= 0; col--) {
-            last = col;
-            if (that.alive(last, row))
+        int last;
+        for (last = that._cols - 1; last >= 0; last--)
+            if (that.cell(last, row).alive())
                 break;
-        }
         /* Print */
         for (int col = 0; col <= last; col++)
-            output << that.getchar(col, row);
+            output << that.cell(col, row);
         
         //output << '.'; /* for debug, to see end of line */
         
@@ -124,6 +123,11 @@ std::ostream& operator<< (std::ostream& output, Field& that)
     
     return output;
 }
+
+
+/*
+ * Private
+ */
 
 int Field::_normalize(int index, int count)
 {
@@ -140,7 +144,4 @@ int Field::_addr(int col, int row)
     row = _normalize(row, _rows);
     return row * _cols + col;
 }
-
-
-
 

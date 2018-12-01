@@ -12,7 +12,7 @@ I prefer to use NetBeans IDE 8.2 with C/C++ toolchain under Ubuntu 18.04.1 LTS.
 
 1. "Clean and Build Project" from IDE.
 2. Run in terminal (it is a console app).
-3. Use Ctrl+C or Ctrl+Z to stop.
+3. Use Ctrl+C to stop.
 
 
 ### License

@@ -29,6 +29,11 @@
 
 #include "cell.h"
 
+
+/*
+ * Public
+ */
+
 Cell::Cell()
 {
     alive(false);
@@ -42,10 +47,25 @@ void Cell::alive(bool set)
         _data &= ~_CELL_MASK_ALIVE;
 }
 
+void Cell::alive(char set)
+{
+    alive(set != _cdead);
+}
+
 bool Cell::alive()
 {
     return (_data & _CELL_MASK_ALIVE);
 }
 
+std::ostream& operator<< (std::ostream& output, Cell& that)
+{
+    output << ((that.alive()) ? that._calive : that._cdead);
+    
+    return output;
+}
 
+
+/*
+ * Private
+ */
 

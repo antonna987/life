@@ -35,25 +35,20 @@
 
 class Field {
 public:
-    Field(int cols, int rows);  // (x, y)
+    Field(int cols, int rows);  /* (x, y) */
     Field(const Field& orig);
     ~Field();
     
-    int cols() { return _cols; };
-    int rows() { return _rows; };
-    bool alive(int col, int row);
-    void alive(int col, int row, bool set);
+    int cols();
+    int rows();
+    Cell& cell(int col, int row);
     int  getncount(int col, int row);
-    char getchar (int col, int row);
     void setrow(int row, char const *const str);
     friend std::ostream& operator<< (std::ostream& output, Field& that);
 private:
     Cell *_cell;
     int _cols, _rows;
 
-    char _calive = 'X';
-    char _cdead  = ' ';
-    
     int _normalize(int index, int count);
     int _addr(int col, int row);
 };
