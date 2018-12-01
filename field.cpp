@@ -37,43 +37,45 @@
  * Public
  */
 
-Field::Field(int cols, int rows)
+Field::Field(int width, int height)
 {
-    assert(cols > 0 && rows > 0);
-    _cols = cols;
-    _rows = rows;
-    int asize = _cols * _rows;
-    _cell = new Cell[asize];
+    assert(width > 0 && height > 0);
+    _width = width;
+    _height = height;
+    _rows = new Row[_height];
+    for (int i = 0; i < _height; i++)
+        _rows[i].init(_width);
 }
 
 Field::Field(const Field& orig)
 {
-    _cols = orig._cols;
-    _rows = orig._rows;
-    int asize = _cols * _rows;
-    _cell = new Cell[asize];
-    for (int i = 0; i < asize; i++)
-        _cell[i] = orig._cell[i];
+    _width = orig._width;
+    _height = orig._height;
+    _rows = new Row[_height];;
+    for (int i = 0; i < _height; i++)
+        _rows[i].init(orig._rows[i]);
 }
 
 Field::~Field()
 {
-    delete [] _cell;
+    delete [] _rows;
 }
 
-int Field::cols() 
+int Field::width() 
 { 
-    return _cols; 
+    return _width; 
 }
 
-int Field::rows() 
+int Field::height() 
 { 
-    return _rows; 
+    return _height; 
 }
 
 Cell& Field::cell(int col, int row)
 {
-    return _cell[_addr(col, row)];
+    col = _normalize(col, _width);
+    row = _normalize(row, _height);
+    return _rows[row].cell(col);
 }
 
 int Field::getncount(int col, int row)
@@ -91,35 +93,18 @@ int Field::getncount(int col, int row)
     return n;
 }
 
-void Field::setrow(int row, char const *const str)
+void Field::setrow(int row, const char *str)
 {
-    row = _normalize(row, _rows);
-    for (int col = 0; col < _cols; col++) {
-        if (str[col] != 0)
-            cell(col, row).alive(str[col]);
-        else
-            return;
-    }
+    row = _normalize(row, _height);
+    _rows[row].set(str);
 }
 
 std::ostream& operator<< (std::ostream& output, Field& that)
 {
     int result = std::system("clear");
     assert(result == 0);    /* What should I do with it? */
-    for (int row = 0; row < that._rows; row++) {
-        /* Search for the last alive cell in a row */
-        int last;
-        for (last = that._cols - 1; last >= 0; last--)
-            if (that.cell(last, row).alive())
-                break;
-        /* Print */
-        for (int col = 0; col <= last; col++)
-            output << that.cell(col, row);
-        
-        //output << '.'; /* for debug, to see end of line */
-        
-        output << std::endl;
-    }
+    for (int row = 0; row < that._height; row++)
+        output << that._rows[row];
     
     return output;
 }
@@ -138,10 +123,4 @@ int Field::_normalize(int index, int count)
     return index;
 }
     
-int Field::_addr(int col, int row)
-{
-    col = _normalize(col, _cols);
-    row = _normalize(row, _rows);
-    return row * _cols + col;
-}
 

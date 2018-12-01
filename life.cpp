@@ -64,8 +64,8 @@ void Life::tick(void)
 {
     Field field(*_field); 
     
-    for (int col = 0; col < field.cols(); col++) {
-        for (int row = 0; row < field.rows(); row++) {
+    for (int col = 0; col < field.width(); col++) {
+        for (int row = 0; row < field.height(); row++) {
             int n = field.getncount(col, row);
             if (field.cell(col, row).alive()) {
                 /* Live cell */

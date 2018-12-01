@@ -21,35 +21,33 @@
  * SOFTWARE. */
 
 /* 
- * File:   cell.h
+ * File:   row.h
  * Author: Anton Nazin <anton.na987@gmail.com>
  *
- * Created on November 25, 2018, 4:49 PM
+ * Created on December 1, 2018, 12:34 PM
  */
 
-#ifndef CELL_H
-#define CELL_H
+#ifndef ROW_H
+#define ROW_H
 
 #include <iostream>
+#include "cell.h"
 
-const unsigned char _CELL_MASK_ALIVE = 0x01;
-
-class Cell {
+class Row {
 public:
-    Cell();
-    void alive(const Cell& orig);
-    void alive(bool set);
-    void alive(char set);
-    bool alive();
-    friend std::ostream& operator<< (std::ostream& output, Cell& that);
-private:
-    unsigned char _data;
+    Row();
+    ~Row();
     
-    char _calive = 'X';
-    char _cdead  = ' ';
+    void init(int width);
+    void init(const Row& orig);
+    void set(const char *str);
+    int width();
+    Cell& cell(int col);
+    friend std::ostream& operator<< (std::ostream& output, Row& that);
+private:
+    Cell *_cells;
+    int _width;
 };
 
-#endif /* CELL_H */
-
-
+#endif /* ROW_H */
 

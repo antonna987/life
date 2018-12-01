@@ -31,23 +31,24 @@
 #define FIELD_H
 
 #include <iostream>
-#include "cell.h"
+#include "row.h"
 
 class Field {
 public:
-    Field(int cols, int rows);  /* (x, y) */
+    Field(int width, int height);  /* (x, y) */
     Field(const Field& orig);
     ~Field();
     
-    int cols();
-    int rows();
+    int width();
+    int height();
     Cell& cell(int col, int row);
     int  getncount(int col, int row);
-    void setrow(int row, char const *const str);
+    void setrow(int row, const char *str);
     friend std::ostream& operator<< (std::ostream& output, Field& that);
 private:
-    Cell *_cell;
-    int _cols, _rows;
+    Row *_rows;
+    int _width;
+    int _height;
 
     int _normalize(int index, int count);
     int _addr(int col, int row);

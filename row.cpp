@@ -21,50 +21,83 @@
  * SOFTWARE. */
 
 /* 
- * File:   cell.cpp
+ * File:   row.cpp
  * Author: Anton Nazin <anton.na987@gmail.com>
  * 
- * Created on November 25, 2018, 4:49 PM
+ * Created on December 1, 2018, 12:34 PM
  */
 
-#include "cell.h"
+#include <cassert>
+#include <climits>
+#include <cstring>
+#include "row.h"
 
 
 /*
  * Public
  */
 
-Cell::Cell()
+Row::Row()
 {
-    alive(false);
+    _width = 0;
+    _cells = NULL;
 }
 
-void Cell::alive(const Cell& orig)
+Row::~Row()
 {
-    _data = orig._data;
+    delete [] _cells;
 }
 
-void Cell::alive(bool set)
+void Row::init(int width)
 {
-    if (set)
-        _data |= _CELL_MASK_ALIVE;
-    else
-        _data &= ~_CELL_MASK_ALIVE;
+    assert(width > 0);
+    
+    _width = width;
+    _cells = new Cell[_width];
 }
 
-void Cell::alive(char set)
+void Row::init(const Row& orig)
 {
-    alive(set != _cdead);
+    init(orig._width);
+    for (int i = 0; i < _width; i++)
+        _cells[i].alive(orig._cells[i]);
 }
 
-bool Cell::alive()
+void Row::set(const char *str)
 {
-    return (_data & _CELL_MASK_ALIVE);
+    int length = strnlen(str, INT_MAX);
+    if (length > 0) {
+        if (length > _width)
+            length = _width;
+        for (int i = 0; i < length; i++)
+            _cells[i].alive(str[i]);
+    }
 }
 
-std::ostream& operator<< (std::ostream& output, Cell& that)
+int Row::width()
 {
-    output << ((that.alive()) ? that._calive : that._cdead);
+    return _width;
+}
+
+Cell& Row::cell(int col)
+{
+    return _cells[col];
+}
+
+std::ostream& operator<< (std::ostream& output, Row& that)
+{
+    /* Search for the last alive cell in a row */
+    int last;
+    for (last = that._width - 1; last >= 0; last--)
+        if (that.cell(last).alive())
+            break;
+    /* Print */
+    for (int col = 0; col <= last; col++)
+        output << that.cell(col);
+
+    //output << '.'; /* for debug, to see end of line */
+
+    output << std::endl;
     
     return output;
 }
