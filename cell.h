@@ -41,7 +41,8 @@ public:
     void alive(bool set);
     void alive(char set);
     bool alive();
-    friend std::ostream& operator<< (std::ostream& output, Cell& that);
+    friend std::ostream& operator<< (std::ostream& os, Cell& cell);
+    friend std::istream& operator>> (std::istream& is, Cell& cell);
 private:
     unsigned char _data;
     
