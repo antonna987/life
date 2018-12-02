@@ -43,9 +43,11 @@ int main()
     char str[5][32];
     
     ifstream file;
-    file.open("../../../example.lif", ios::in);
-    if (!file.is_open())
-        return -1;
+    file.open("example.lif", ios::in);
+    if (!file.is_open()) {
+        cout << "File open error" << endl;
+        return 0;
+    }
     for (int i = 0; i < 5; i++)
         file >> str[i];
     //file >> life;
