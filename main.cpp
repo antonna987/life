@@ -36,7 +36,7 @@ using namespace std;
 /*
  * 
  */
-int main(int argc, char** argv)
+int main()
 {
     Life life(80, 40);
     life.setrow(0, "    X              ");
