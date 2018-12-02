@@ -38,7 +38,7 @@ class Cell {
 public:
     Cell();
     void set(bool alive);
-    void alive(char c);
+    void setc(char c);
     bool get();
     friend std::ostream& operator<< (std::ostream& os, Cell& cell);
     friend std::istream& operator>> (std::istream& is, Cell& cell);

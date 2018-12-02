@@ -47,7 +47,7 @@ void Cell::set(bool alive)
         _data &= ~_CELL_MASK_ALIVE;
 }
 
-void Cell::alive(char c)
+void Cell::setc(char c)
 {
     set(c != _cdead);
 }

@@ -61,7 +61,7 @@ void Row::set(const char *str)
         if (length > _width)
             length = _width;
         for (int i = 0; i < length; i++)
-            _cells[i].alive(str[i]);
+            _cells[i].setc(str[i]);
     }
 }
 
