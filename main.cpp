@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 {
     Life life(80, 40);
     char str[5][32];
-    
+
     ifstream file;
     if (argc < 2) {
         cout << "Usage: life FILE" << endl;
@@ -56,23 +56,23 @@ int main(int argc, char **argv)
         file >> str[i];
     //file >> life;
     file.close();
-    
+
     life.setrow(0, "    X              ");
     life.setrow(1, " XX XX  X    XX    ");
     life.setrow(2, "  XX XXX     XX    ");
     life.setrow(3, "X  XXX             ");
     life.setrow(4, " XX X X            ");
-    
+
     int i = 0;
     while (1) {
         cout << life;
         cout << i << endl;
         i++;
-    
+
         life.tick();
         usleep(1000000 / 20);
     }
-    
+
     return 0;
 }
 

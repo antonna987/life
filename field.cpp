@@ -27,7 +27,6 @@
  * Created on November 14, 2018, 8:44 PM
  */
 
-#include <cassert>
 #include <cstdlib>
 #include <unistd.h>
 #include "field.h"
@@ -99,7 +98,10 @@ void Field::setrow(int row, const char *str)
 std::ostream& operator<< (std::ostream& output, Field& that)
 {
     int result = std::system("clear");
-    assert(result == 0);    /* What should I do with it? */
+    if (result != 0) {
+        std::cout << "Error on syscall 'clear'" << std::endl;
+        abort();
+    }
     for (int row = 0; row < that._height; row++)
         output << that._rows[row];
     
@@ -112,8 +114,11 @@ std::ostream& operator<< (std::ostream& output, Field& that)
  */
 
 void Field::_init(int width, int height)
-{
-    assert(width > 0 && height > 0);
+{ 
+    if (width < 1 || height < 1) {
+        std::cout << "Error at 'Field::_init()'" << std::endl;
+        abort();
+    }
     _width = width;
     _height = height;
     _rows = new Row *[_height];

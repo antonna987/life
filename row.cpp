@@ -27,7 +27,6 @@
  * Created on December 1, 2018, 12:34 PM
  */
 
-#include <cassert>
 #include <climits>
 #include <cstring>
 #include "row.h"
