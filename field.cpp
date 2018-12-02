@@ -81,7 +81,7 @@ int Field::getncount(int col, int row)
     for (int dcol = -1; dcol < 2; dcol++) {
         for (int drow = -1; drow < 2; drow++) {
             if (dcol != 0 || drow != 0) {
-                if (cell(col + dcol, row + drow).alive())
+                if (cell(col + dcol, row + drow).get())
                     n++;
             }
         }

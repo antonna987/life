@@ -80,7 +80,7 @@ std::ostream& operator<< (std::ostream& output, Row *that)
     /* Search for the last alive cell in a row */
     int last;
     for (last = that->_width - 1; last >= 0; last--)
-        if (that->cell(last).alive())
+        if (that->cell(last).get())
             break;
     /* Print */
     for (int col = 0; col <= last; col++)

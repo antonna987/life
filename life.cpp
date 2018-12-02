@@ -67,7 +67,7 @@ void Life::tick(void)
     for (int col = 0; col < field.width(); col++) {
         for (int row = 0; row < field.height(); row++) {
             int n = field.getncount(col, row);
-            if (field.cell(col, row).alive()) {
+            if (field.cell(col, row).get()) {
                 /* Live cell */
                 if (n < _ifless_dies || n > _ifmore_dies)
                     _field->cell(col, row).alive(false);

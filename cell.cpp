@@ -57,14 +57,14 @@ void Cell::alive(char set)
     alive(set != _cdead);
 }
 
-bool Cell::alive()
+bool Cell::get()
 {
     return (_data & _CELL_MASK_ALIVE);
 }
 
 std::ostream& operator<< (std::ostream& os, Cell& cell)
 {
-    os << ((cell.alive()) ? cell._calive : cell._cdead);
+    os << ((cell.get()) ? cell._calive : cell._cdead);
     
     return os;
 }

@@ -40,7 +40,7 @@ public:
     void alive(const Cell& orig);
     void alive(bool set);
     void alive(char set);
-    bool alive();
+    bool get();
     friend std::ostream& operator<< (std::ostream& os, Cell& cell);
     friend std::istream& operator>> (std::istream& is, Cell& cell);
 private:
