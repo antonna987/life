@@ -36,7 +36,7 @@
 
 Cell::Cell()
 {
-    alive(false);
+    set(false);
 }
 
 void Cell::alive(const Cell& orig)
@@ -44,17 +44,17 @@ void Cell::alive(const Cell& orig)
     _data = orig._data;
 }
 
-void Cell::alive(bool set)
+void Cell::set(bool alive)
 {
-    if (set)
+    if (alive)
         _data |= _CELL_MASK_ALIVE;
     else
         _data &= ~_CELL_MASK_ALIVE;
 }
 
-void Cell::alive(char set)
+void Cell::alive(char c)
 {
-    alive(set != _cdead);
+    set(c != _cdead);
 }
 
 bool Cell::get()

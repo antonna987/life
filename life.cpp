@@ -51,7 +51,7 @@ void Life::setrow(int row, char const *const str)
 
 void Life::alive(int col, int row, bool set)
 {
-    _field->cell(col, row).alive(set);
+    _field->cell(col, row).set(set);
 };
 
 std::ostream& operator<<(std::ostream& output, Life& that)
@@ -70,11 +70,11 @@ void Life::tick(void)
             if (field.cell(col, row).get()) {
                 /* Live cell */
                 if (n < _ifless_dies || n > _ifmore_dies)
-                    _field->cell(col, row).alive(false);
+                    _field->cell(col, row).set(false);
             } else {
                 /* Dead cell */
                 if (n == _ifequa_repr)
-                    _field->cell(col, row).alive(true);
+                    _field->cell(col, row).set(true);
             }
         }
     }
