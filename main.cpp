@@ -28,6 +28,7 @@
  */
 
 #include <cstdlib>
+#include <fstream>
 #include <unistd.h>
 #include "life.h"
 
@@ -39,6 +40,17 @@ using namespace std;
 int main()
 {
     Life life(80, 40);
+    char str[5][32];
+    
+    ifstream file;
+    file.open("../../../example.lif", ios::in);
+    if (!file.is_open())
+        return -1;
+    for (int i = 0; i < 5; i++)
+        file >> str[i];
+    //file >> life;
+    file.close();
+    
     life.setrow(0, "    X              ");
     life.setrow(1, " XX XX  X    XX    ");
     life.setrow(2, "  XX XXX     XX    ");
