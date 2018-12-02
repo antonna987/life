@@ -27,9 +27,7 @@
  * Created on November 13, 2018, 9:02 PM
  */
 
-#include <cstdlib>
 #include <fstream>
-#include <string>
 #include <unistd.h>
 #include "life.h"
 
@@ -52,14 +50,7 @@ int main(int argc, char **argv)
         cout << "File open error" << endl;
         return 0;
     }
-    
-    string str;
-    int line = 0;
-    while (getline(file, str)) {
-        life.setrow(line, str.c_str());
-        line++;
-    }
-    //file >> life;
+    file >> life;
     file.close();
 
     int i = 0;
@@ -68,6 +59,8 @@ int main(int argc, char **argv)
         cout << i << endl;
         i++;
 
+        //cin.get();
+        
         life.tick();
         usleep(1000000 / 20);
     }

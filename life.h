@@ -31,14 +31,16 @@
 #define LIFE_HPP
 
 #include "field.h"
-    
+
+using namespace std;
+
 class Life {
 public:
     Life(int cols, int rows);
     ~Life();
-    void setrow(int row, char const *const str);
     void alive(int col, int row, bool set);
-    friend std::ostream& operator<< (std::ostream& output, Life& that);
+    friend ostream& operator<< (ostream& os, Life& that);
+    friend istream& operator>> (istream& is, Life& that);
     void tick(void);
 private:
     Field *_field;

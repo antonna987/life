@@ -28,7 +28,7 @@
  */
 
 #include "life.h"
-
+#include <string>
 
 /*
  * Public
@@ -44,21 +44,28 @@ Life::~Life()
     delete _field;
 }
 
-void Life::setrow(int row, char const *const str)
-{
-    _field->setrow(row, str);
-}
-
 void Life::alive(int col, int row, bool set)
 {
     _field->cell(col, row).set(set);
 };
 
-std::ostream& operator<<(std::ostream& output, Life& that)
+ostream& operator<<(ostream& os, Life& that)
 {
     Field& f = *(that._field);
-    return output << f;
+    return os << f;
 };
+
+istream& operator>>(istream& is, Life& that)
+{
+    string str;
+    int row = 0;
+    while (getline(is, str)) {
+        that._field->setrow(row, str.c_str());
+        row++;
+    }
+    
+    return is;
+}
 
 void Life::tick(void)
 {
