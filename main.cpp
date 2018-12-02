@@ -37,13 +37,17 @@ using namespace std;
 /*
  * 
  */
-int main()
+int main(int argc, char **argv)
 {
     Life life(80, 40);
     char str[5][32];
     
     ifstream file;
-    file.open("example.lif", ios::in);
+    if (argc < 2) {
+        cout << "Usage: life FILE" << endl;
+        return 0;
+    }
+    file.open(argv[1], ios::in);
     if (!file.is_open()) {
         cout << "File open error" << endl;
         return 0;
