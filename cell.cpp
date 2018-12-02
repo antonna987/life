@@ -39,11 +39,6 @@ Cell::Cell()
     set(false);
 }
 
-void Cell::alive(const Cell& orig)
-{
-    _data = orig._data;
-}
-
 void Cell::set(bool alive)
 {
     if (alive)

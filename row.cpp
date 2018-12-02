@@ -46,7 +46,7 @@ Row::Row(int width)
 Row::Row(const Row *orig) : Row(orig->_width)
 {
     for (int i = 0; i < _width; i++)
-        _cells[i].alive(orig->_cells[i]);
+        _cells[i].set(orig->_cells[i].get());
 }
 
 Row::~Row()

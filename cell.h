@@ -37,7 +37,6 @@ const unsigned char _CELL_MASK_ALIVE = 0x01;
 class Cell {
 public:
     Cell();
-    void alive(const Cell& orig);
     void set(bool alive);
     void alive(char c);
     bool get();
