@@ -43,7 +43,7 @@
           <warningLevel>3</warningLevel>
         </ccTool>
         <linkerTool>
-          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/life</output>
+          <output>${CND_DISTDIR}/life</output>
         </linkerTool>
       </compileType>
       <item path=".gitignore" ex="false" tool="3" flavor2="0">
@@ -94,6 +94,9 @@
         <asmTool>
           <developmentMode>5</developmentMode>
         </asmTool>
+        <linkerTool>
+          <output>${CND_DISTDIR}/life</output>
+        </linkerTool>
       </compileType>
       <item path=".gitignore" ex="false" tool="3" flavor2="0">
       </item>

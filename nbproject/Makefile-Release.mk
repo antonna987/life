@@ -60,11 +60,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/life
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/life
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/life: ${OBJECTFILES}
-	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/life ${OBJECTFILES} ${LDLIBSOPTIONS}
+${CND_DISTDIR}/life: ${OBJECTFILES}
+	${MKDIR} -p ${CND_DISTDIR}
+	${LINK.cc} -o ${CND_DISTDIR}/life ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/cell.o: cell.cpp
 	${MKDIR} -p ${OBJECTDIR}
