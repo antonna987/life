@@ -29,6 +29,7 @@
 
 #include <cstdlib>
 #include <fstream>
+#include <string>
 #include <unistd.h>
 #include "life.h"
 
@@ -40,7 +41,6 @@ using namespace std;
 int main(int argc, char **argv)
 {
     Life life(80, 40);
-    char str[5][32];
 
     ifstream file;
     if (argc < 2) {
@@ -52,16 +52,15 @@ int main(int argc, char **argv)
         cout << "File open error" << endl;
         return 0;
     }
-    for (int i = 0; i < 5; i++)
-        file >> str[i];
+    
+    string str;
+    int line = 0;
+    while (getline(file, str)) {
+        life.setrow(line, str.c_str());
+        line++;
+    }
     //file >> life;
     file.close();
-
-    life.setrow(0, "    X              ");
-    life.setrow(1, " XX XX  X    XX    ");
-    life.setrow(2, "  XX XXX     XX    ");
-    life.setrow(3, "X  XXX             ");
-    life.setrow(4, " XX X X            ");
 
     int i = 0;
     while (1) {
