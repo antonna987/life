@@ -62,11 +62,20 @@ bool Cell::alive()
     return (_data & _CELL_MASK_ALIVE);
 }
 
-std::ostream& operator<< (std::ostream& output, Cell& that)
+std::ostream& operator<< (std::ostream& os, Cell& cell)
 {
-    output << ((that.alive()) ? that._calive : that._cdead);
+    os << ((cell.alive()) ? cell._calive : cell._cdead);
     
-    return output;
+    return os;
+}
+
+std::istream& operator>> (std::istream& is, Cell& cell)
+{
+    char c;
+    is >> c;
+    cell.alive(c != cell._cdead);
+    
+    return is;
 }
 
 
