@@ -68,7 +68,7 @@ std::istream& operator>> (std::istream& is, Cell& cell)
 {
     char c;
     is >> c;
-    cell.alive(c != cell._cdead);
+    cell.set(c != cell._cdead);
     
     return is;
 }
