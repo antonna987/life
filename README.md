@@ -8,10 +8,13 @@ This project is created with educational purpose (studying Git and C++) and for 
 I prefer to use NetBeans IDE 8.2 with C/C++ toolchain under Ubuntu 18.04.1 LTS.
 
 
-### Installing
+### Running
 
 1. "Clean and Build Project" from IDE.
-2. Run in terminal (it is a console app).
+
+2. From project directory use:
+$ ./dist/life example.lif
+
 3. Use Ctrl+C to stop.
 
 
