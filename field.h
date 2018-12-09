@@ -41,10 +41,11 @@ public:
     
     int width();
     int height();
-    Cell& cell(int col, int row);
+    bool get(int col, int row);
+    void set(int col, int row, bool alive);
     int  getncount(int col, int row);
-    void setrow(int row, const char *str);
-    friend std::ostream& operator<< (std::ostream& output, Field& that);
+    friend std::ostream& operator<< (std::ostream& os, Field& that);
+    friend std::istream& operator>> (std::istream& is, Field& that);
 private:
     Row **_rows;
     int _width;

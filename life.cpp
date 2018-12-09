@@ -44,9 +44,10 @@ Life::~Life()
     delete _field;
 }
 
-void Life::alive(int col, int row, bool set)
+void Life::set(int col, int row, bool alive)
 {
-    _field->cell(col, row).set(set);
+    
+    _field->set(col, row, alive);
 };
 
 ostream& operator<<(ostream& os, Life& that)
@@ -57,12 +58,13 @@ ostream& operator<<(ostream& os, Life& that)
 
 istream& operator>>(istream& is, Life& that)
 {
-    string str;
-    int row = 0;
-    while (getline(is, str)) {
-        that._field->setrow(row, str.c_str());
-        row++;
-    }
+    is >> *(that._field);
+
+//    using namespace std;
+//    cout << "Result:" << endl;
+//    cout << *(that._field) << endl;
+//    cout << "Press Enter to continue..." << endl;
+//    cin.ignore();
     
     return is;
 }
@@ -74,14 +76,14 @@ void Life::tick(void)
     for (int col = 0; col < field.width(); col++) {
         for (int row = 0; row < field.height(); row++) {
             int n = field.getncount(col, row);
-            if (field.cell(col, row).get()) {
+            if (field.get(col, row)) {
                 /* Live cell */
                 if (n < _ifless_dies || n > _ifmore_dies)
-                    _field->cell(col, row).set(false);
+                    _field->set(col, row, false);
             } else {
                 /* Dead cell */
                 if (n == _ifequa_repr)
-                    _field->cell(col, row).set(true);
+                    _field->set(col, row, true);
             }
         }
     }

@@ -31,7 +31,7 @@
 #define ROW_H
 
 #include <iostream>
-#include "cell.h"
+#include <vector>
 
 class Row {
 public:
@@ -39,13 +39,19 @@ public:
     Row(const Row *orig);
     ~Row();
     
-    void set(const char *str);
     int width();
-    Cell& cell(int col);
-    friend std::ostream& operator<< (std::ostream& output, Row *that);
+    bool get(int col);
+    void set(int col, bool alive);
+    friend std::ostream& operator<< (std::ostream& os, Row& that);
+    friend std::istream& operator>> (std::istream& is, Row& that);
 private:
-    Cell *_cells;
+    std::vector<bool> _cells;
     int _width;
+    
+    char _calive = 'X';
+    char _cdead  = ' ';
+    bool _ctob(char c);
+    char _btoc(bool b);
 };
 
 #endif /* ROW_H */

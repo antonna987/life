@@ -38,7 +38,7 @@ class Life {
 public:
     Life(int cols, int rows);
     ~Life();
-    void alive(int col, int row, bool set);
+    void set(int col, int row, bool alive);
     friend ostream& operator<< (ostream& os, Life& that);
     friend istream& operator>> (istream& is, Life& that);
     void tick(void);

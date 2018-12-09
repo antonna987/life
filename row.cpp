@@ -27,41 +27,25 @@
  * Created on December 1, 2018, 12:34 PM
  */
 
-#include <climits>
-#include <cstring>
+#include <cassert>
+#include <string>
 #include "row.h"
-
-
-/*
- * Public
- */
 
 Row::Row(int width)
 {
+    assert(width > 0);
     _width = width;
-    _cells = new Cell[_width];
+    _cells.reserve(width);
 }
 
 Row::Row(const Row *orig) : Row(orig->_width)
 {
     for (int i = 0; i < _width; i++)
-        _cells[i].set(orig->_cells[i].get());
+        _cells[i] = orig->_cells[i];
 }
 
 Row::~Row()
 {
-    delete [] _cells;
-}
-
-void Row::set(const char *str)
-{
-    int length = strnlen(str, INT_MAX);
-    if (length > 0) {
-        if (length > _width)
-            length = _width;
-        for (int i = 0; i < length; i++)
-            _cells[i].setc(str[i]);
-    }
 }
 
 int Row::width()
@@ -69,31 +53,67 @@ int Row::width()
     return _width;
 }
 
-Cell& Row::cell(int col)
+bool Row::get(int col)
 {
+    assert(col >= 0);
+    assert(col < _width);
+    
     return _cells[col];
 }
 
-std::ostream& operator<< (std::ostream& output, Row *that)
+void Row::set(int col, bool alive)
+{
+    _cells[col] = alive;
+}
+
+std::ostream& operator<< (std::ostream& os, Row& that)
 {
     /* Search for the last alive cell in a row */
     int last;
-    for (last = that->_width - 1; last >= 0; last--)
-        if (that->cell(last).get())
+    for (last = that._width - 1; last >= 0; last--)
+        if (that._cells[last])
             break;
     /* Print */
     for (int col = 0; col <= last; col++)
-        output << that->cell(col);
+        os << that._btoc(that._cells[col]);
 
-    //output << '.'; /* for debug, to see end of line */
+    //output << '.'; // for debug, to see end of line
 
-    output << std::endl;
+    os << std::endl;
     
-    return output;
+    return os;
 }
 
+std::istream& operator>> (std::istream& is, Row& that)
+{
+    std::string str;
+    getline(is, str);
+    
+    int length = str.length();
+    if (length > that._width)
+            length = that._width;
 
-/*
- * Private
- */
+    for (int i = 0; i < length; i++)
+        that._cells[i] = that._ctob(str.at(i));
+    
+//    using namespace std;
+//    cout << "String: " << str << endl;
+//    cout << "Length: " << length << endl;
+//    cout << "Result: " << that;
+//    cout << "Width: " << that._width << endl;
+//    cout << "Press Enter to continue..." << endl;
+//    cin.ignore();
+    
+    return is;
+}
+
+bool Row::_ctob(char c)
+{
+    return (c == _calive);
+}
+
+char Row::_btoc(bool b)
+{
+    return (b ? _calive : _cdead);
+}
 

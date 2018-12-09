@@ -28,6 +28,7 @@
  */
 
 #include <cstdlib>
+#include <string>
 #include <unistd.h>
 #include "field.h"
 
@@ -67,11 +68,18 @@ int Field::height()
     return _height; 
 }
 
-Cell& Field::cell(int col, int row)
+bool Field::get(int col, int row)
 {
     col = _normalize(col, _width);
     row = _normalize(row, _height);
-    return _rows[row]->cell(col);
+    return _rows[row]->get(col);
+}
+
+void Field::set(int col, int row, bool alive)
+{
+    col = _normalize(col, _width);
+    row = _normalize(row, _height);
+    _rows[row]->set(col, alive);
 }
 
 int Field::getncount(int col, int row)
@@ -80,7 +88,7 @@ int Field::getncount(int col, int row)
     for (int dcol = -1; dcol < 2; dcol++) {
         for (int drow = -1; drow < 2; drow++) {
             if (dcol != 0 || drow != 0) {
-                if (cell(col + dcol, row + drow).get())
+                if (get(col + dcol, row + drow))
                     n++;
             }
         }
@@ -89,13 +97,7 @@ int Field::getncount(int col, int row)
     return n;
 }
 
-void Field::setrow(int row, const char *str)
-{
-    row = _normalize(row, _height);
-    _rows[row]->set(str);
-}
-
-std::ostream& operator<< (std::ostream& output, Field& that)
+std::ostream& operator<< (std::ostream& os, Field& that)
 {
     int result = std::system("clear");
     if (result != 0) {
@@ -103,11 +105,28 @@ std::ostream& operator<< (std::ostream& output, Field& that)
         abort();
     }
     for (int row = 0; row < that._height; row++)
-        output << that._rows[row];
+        os << *(that._rows[row]);
     
-    return output;
+    return os;
 }
 
+std::istream& operator>> (std::istream& is, Field& that)
+{
+    int row = 0;
+    while (!is.eof() && row < that._height) {
+        is >> *(that._rows[row]);
+        
+//        using namespace std;
+//        cout << "Result[" << row << "]: " << *(that._rows[row]);
+//        cout << "Width: " << that._width << endl;
+//        cout << "Press Enter to continue..." << endl;
+//        cin.ignore();
+
+        row++;
+    }
+    
+    return is;
+}
 
 /*
  * Private
