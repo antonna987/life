@@ -12,8 +12,9 @@ I prefer to use NetBeans IDE 8.2 with C/C++ toolchain under Ubuntu 18.04.1 LTS.
 
 1. "Clean and Build Project" from IDE.
 
-2. From project directory use:
+2. Run:
 ```
+$ cd life/
 $ ./dist/life try/pentadecathlon
 ```
 (see for existed examples in 'try/' folder)
