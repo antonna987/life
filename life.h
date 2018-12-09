@@ -38,12 +38,13 @@ class Life {
 public:
     Life(int cols, int rows);
     ~Life();
-    void set(int col, int row, bool alive);
+    
     friend ostream& operator<< (ostream& os, Life& that);
     friend istream& operator>> (istream& is, Life& that);
     void tick(void);
 private:
     Field *_field;
+    
     int _ifless_dies = 2;
     int _ifmore_dies = 3;
     int _ifequa_repr = 3;

@@ -27,35 +27,30 @@
  * Created on November 14, 2018, 8:44 PM
  */
 
+#include <cassert>
 #include <cstdlib>
 #include <string>
 #include <unistd.h>
 #include "field.h"
 
-
-/*
- * Public
- */
-
-Field::Field(int width, int height)
+Field::Field(int width, int height) : _cells(height, std::vector<bool>(width))
 {
-    _init(width, height);
-    for (int i = 0; i < _height; i++)
-        _rows[i] = new Row(_width);
+    assert(width > 0);
+    assert(height > 0);
+    
+    _width = width;
+    _height = height;
+        
+    for (int row = 0; row < _height; row++)
+        for (int col = 0; col < _width; col++)
+            _cells[row][col] = false;
 }
 
-Field::Field(const Field& orig)
+Field::Field(Field& orig) : Field(orig._width, orig._height)
 {
-    _init(orig._width, orig._height);
-    for (int i = 0; i < _height; i++)
-        _rows[i] = new Row(orig._rows[i]);
-}
-
-Field::~Field()
-{
-    for (int i = 0; i < _height; i++)
-        delete _rows[i];
-    delete [] _rows;
+    for (int row = 0; row < _height; row++)
+        for (int col = 0; col < _width; col++)
+            _cells[row][col] = orig._cells[row][col];
 }
 
 int Field::width() 
@@ -72,27 +67,24 @@ bool Field::get(int col, int row)
 {
     col = _normalize(col, _width);
     row = _normalize(row, _height);
-    return _rows[row]->get(col);
+    return _cells[row][col];
 }
 
 void Field::set(int col, int row, bool alive)
 {
     col = _normalize(col, _width);
     row = _normalize(row, _height);
-    _rows[row]->set(col, alive);
+    _cells[row][col] = alive;
 }
 
 int Field::getncount(int col, int row)
 {
     int n = 0;
-    for (int dcol = -1; dcol < 2; dcol++) {
-        for (int drow = -1; drow < 2; drow++) {
-            if (dcol != 0 || drow != 0) {
+    for (int dcol = -1; dcol < 2; dcol++)
+        for (int drow = -1; drow < 2; drow++)
+            if (dcol != 0 || drow != 0)
                 if (get(col + dcol, row + drow))
                     n++;
-            }
-        }
-    }
     
     return n;
 }
@@ -104,8 +96,22 @@ std::ostream& operator<< (std::ostream& os, Field& that)
         std::cout << "Error on syscall 'clear'" << std::endl;
         abort();
     }
-    for (int row = 0; row < that._height; row++)
-        os << *(that._rows[row]);
+    
+    for (int row = 0; row < that._height; row++) {
+        /* Search for the last alive cell in a row */
+        int lastcol = that._width - 1;
+        while (lastcol) {
+            if (that._cells[row][lastcol])
+                break;
+            lastcol--;
+        }
+
+        /* Print */
+        for (int col = 0; col <= lastcol; col++)
+            os << that._btoc(that._cells[row][col]);
+        
+        os << std::endl;
+    }
     
     return os;
 }
@@ -113,34 +119,21 @@ std::ostream& operator<< (std::ostream& os, Field& that)
 std::istream& operator>> (std::istream& is, Field& that)
 {
     int row = 0;
-    while (!is.eof() && row < that._height) {
-        is >> *(that._rows[row]);
-        
-//        using namespace std;
-//        cout << "Result[" << row << "]: " << *(that._rows[row]);
-//        cout << "Width: " << that._width << endl;
-//        cout << "Press Enter to continue..." << endl;
-//        cin.ignore();
+    while (!is.eof() && row < that.height()) {
+        std::string str;
+        getline(is, str);
 
+        int length = str.length();
+        if (length > that._width)
+                length = that._width;
+
+        for (int i = 0; i < length; i++)
+            that._cells[row][i] = that._ctob(str[i]);
+        
         row++;
     }
-    
+
     return is;
-}
-
-/*
- * Private
- */
-
-void Field::_init(int width, int height)
-{ 
-    if (width < 1 || height < 1) {
-        std::cout << "Error at 'Field::_init()'" << std::endl;
-        abort();
-    }
-    _width = width;
-    _height = height;
-    _rows = new Row *[_height];
 }
 
 int Field::_normalize(int index, int count)
@@ -152,4 +145,13 @@ int Field::_normalize(int index, int count)
     return index;
 }
     
+bool Field::_ctob(char c)
+{
+    return (c == _calive);
+}
+
+char Field::_btoc(bool b)
+{
+    return (b ? _calive : _cdead);
+}
 

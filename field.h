@@ -31,28 +31,31 @@
 #define FIELD_H
 
 #include <iostream>
-#include "row.h"
+#include <vector>
 
 class Field {
 public:
-    Field(int width, int height);  /* (x, y) */
-    Field(const Field& orig);
-    ~Field();
+    Field(int width, int height);
+    Field(Field& orig);
     
     int width();
     int height();
     bool get(int col, int row);
     void set(int col, int row, bool alive);
-    int  getncount(int col, int row);
+    int getncount(int col, int row);
     friend std::ostream& operator<< (std::ostream& os, Field& that);
     friend std::istream& operator>> (std::istream& is, Field& that);
 private:
-    Row **_rows;
-    int _width;
-    int _height;
+    std::vector< std::vector<bool> > _cells;
+    int _width = 0;
+    int _height = 0;
 
-    void _init(int width, int height);
     int _normalize(int index, int count);
+    
+    char _calive = 'X';
+    char _cdead  = ' ';
+    bool _ctob(char c);
+    char _btoc(bool b);
 };
 
 #endif /* FIELD_H */

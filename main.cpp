@@ -46,6 +46,7 @@ int main(int argc, char **argv)
         return 0;
     }
     file.open(argv[1], ios::in);
+//    file.open("try/pentadecathlon", ios::in);
     if (!file.is_open()) {
         cout << "File open error" << endl;
         return 0;
@@ -58,7 +59,7 @@ int main(int argc, char **argv)
         cout << life;
         cout << i << endl;
         i++;
-
+        
         //cin.get();
         
         life.tick();

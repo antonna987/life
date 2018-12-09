@@ -30,10 +30,6 @@
 #include "life.h"
 #include <string>
 
-/*
- * Public
- */
-
 Life::Life(int cols, int rows)
 {
     _field = new Field(cols, rows);
@@ -44,38 +40,25 @@ Life::~Life()
     delete _field;
 }
 
-void Life::set(int col, int row, bool alive)
-{
-    
-    _field->set(col, row, alive);
-};
-
 ostream& operator<<(ostream& os, Life& that)
 {
-    Field& f = *(that._field);
-    return os << f;
+    os << *(that._field);
+    return os;
 };
 
 istream& operator>>(istream& is, Life& that)
 {
     is >> *(that._field);
-
-//    using namespace std;
-//    cout << "Result:" << endl;
-//    cout << *(that._field) << endl;
-//    cout << "Press Enter to continue..." << endl;
-//    cin.ignore();
-    
     return is;
 }
 
 void Life::tick(void)
 {
     Field field(*_field); 
-    
+                
     for (int col = 0; col < field.width(); col++) {
         for (int row = 0; row < field.height(); row++) {
-            int n = field.getncount(col, row);
+            int n = field.getncount(col, row);            
             if (field.get(col, row)) {
                 /* Live cell */
                 if (n < _ifless_dies || n > _ifmore_dies)
@@ -88,9 +71,4 @@ void Life::tick(void)
         }
     }
 }
-
-
-/*
- * Private
- */
 
